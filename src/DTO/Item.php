@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use App\Enum\ItemType;
 use App\Enum\UnitType;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,7 +20,11 @@ final readonly class Item
 
         #[Assert\NotNull]
         #[Assert\Type(UnitType::class)]
-        public UnitType $unit
+        public UnitType $unit,
+
+        #[Assert\NotNull]
+        #[Assert\Type(ItemType::class)]
+        public ItemType $type,
     ) {
     }
 }

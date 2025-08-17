@@ -5,7 +5,7 @@ namespace App\Service\UnitConverter;
 
 use App\Enum\UnitType;
 
-final class UnitConverter implements UnitConverterInterface
+final class UnitConverterService implements UnitConverterInterface
 {
     /**
      * @param float $amount
