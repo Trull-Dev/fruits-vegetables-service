@@ -7,6 +7,11 @@ use App\Enum\UnitType;
 
 final class UnitConverter implements UnitConverterInterface
 {
+    /**
+     * @param float $amount
+     * @param UnitType $unit
+     * @return int
+     */
     public function toGrams(float $amount, UnitType $unit): int
     {
         return match ($unit) {
@@ -15,6 +20,11 @@ final class UnitConverter implements UnitConverterInterface
         };
     }
 
+    /**
+     * @param int $grams
+     * @param UnitType $targetUnit
+     * @return float
+     */
     public function fromGrams(int $grams, UnitType $targetUnit): float
     {
         return match ($targetUnit) {
