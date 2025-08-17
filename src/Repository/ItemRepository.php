@@ -17,15 +17,50 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
+    /**
+     * @param Item $item
+     * @return void
+     */
     public function save(Item $item): void
     {
         $this->getEntityManager()->persist($item);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @param Item $item
+     * @return void
+     */
     public function remove(Item $item): void
     {
         $this->getEntityManager()->remove($item);
         $this->getEntityManager()->flush();
     }
+
+    /**
+     * @param array $filters
+     * @return array
+     */
+    public function findByFilters(array $filters): array
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        if (isset($filters['name'])) {
+            $qb->andWhere('i.name = :name')
+                ->setParameter('name', $filters['name']);
+        }
+
+        if (isset($filters['minGrams'])) {
+            $qb->andWhere('i.amountInGrams >= :minGrams')
+                ->setParameter('minGrams', $filters['minGrams']);
+        }
+
+        if (isset($filters['maxGrams'])) {
+            $qb->andWhere('i.amountInGrams <= :maxGrams')
+                ->setParameter('maxGrams', $filters['maxGrams']);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

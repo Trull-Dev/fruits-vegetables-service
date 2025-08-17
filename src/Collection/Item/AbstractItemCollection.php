@@ -55,6 +55,6 @@ abstract class AbstractItemCollection implements ItemCollectionInterface
     public function list(array $filters = []): Collection
     {
         $criteria = array_merge(['type' => $this->type], $filters);
-        return new ArrayCollection($this->repository->findBy($criteria));
+        return new ArrayCollection($this->repository->findByFilters($criteria));
     }
 }

@@ -18,7 +18,7 @@ class Item
     #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column(enumType: ItemType::class)]
+    #[ORM\Column(type: 'string', enumType: ItemType::class)]
     private ItemType $type;
 
     #[ORM\Column(type: 'float')]

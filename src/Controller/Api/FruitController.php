@@ -8,6 +8,7 @@ use App\DTO\Item as ItemDTO;
 use App\Service\ItemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,18 +25,21 @@ final class FruitController extends AbstractController
 
     #[Route('', methods: ['GET'])]
     public function list(
+        Request $request,
         #[MapQueryParameter] ?string $name = null,
+        #[MapQueryParameter] ?string $unit = null,
         #[MapQueryParameter] ?float $min = null,
         #[MapQueryParameter] ?float $max = null,
     ): JsonResponse {
         $query = array_filter([
             'name' => $name,
+            'unit' => $unit,
             'min' => $min,
             'max' => $max,
         ], fn($value) => $value !== null);
 
         return $this->json(
-            $this->itemService->list($query, $this->collection)
+            $this->itemService->list($request, $this->collection)
         );
     }
 
