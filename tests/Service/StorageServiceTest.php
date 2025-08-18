@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\App\Service;
+namespace App\Tests\Service;
 
 use App\Service\StorageService;
 use PHPUnit\Framework\TestCase;
