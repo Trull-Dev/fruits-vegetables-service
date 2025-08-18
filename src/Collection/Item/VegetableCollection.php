@@ -6,7 +6,7 @@ namespace App\Collection\Item;
 use App\Enum\ItemType;
 use App\Repository\ItemRepository;
 
-final class VegetableCollection extends AbstractItemCollection
+class VegetableCollection extends AbstractItemCollection
 {
     public function __construct(ItemRepository $repository)
     {

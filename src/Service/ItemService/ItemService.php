@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\ItemService;
 
 use App\Collection\Item\ItemCollectionInterface;
-use App\Entity\Item;
 use App\DTO\Item as ItemDTO;
+use App\Entity\Item;
 use App\Enum\UnitType;
 use App\Service\UnitConverter\UnitConverterInterface;
 use InvalidArgumentException;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use ValueError;
 
-final readonly class ItemService
+final readonly class ItemService implements ItemServiceInterface
 {
     public function __construct(
         private UnitConverterInterface $converter,

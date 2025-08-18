@@ -16,6 +16,10 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    serializer:
+          enable_attributes: true
+          mapping:
+              paths: [ '%kernel.project_dir%/src/DTO' ]
 
 when@test:
     framework:

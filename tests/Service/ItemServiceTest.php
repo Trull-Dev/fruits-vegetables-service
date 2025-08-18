@@ -8,7 +8,7 @@ use App\DTO\Item as ItemDTO;
 use App\Entity\Item;
 use App\Enum\ItemType;
 use App\Enum\UnitType;
-use App\Service\ItemService;
+use App\Service\ItemService\ItemService;
 use App\Service\UnitConverter\UnitConverterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;

@@ -79,12 +79,10 @@ class UnitConverterServiceTest extends TestCase
 
     public function testPrecisionHandling(): void
     {
-        // Test that very small amounts are handled correctly
         $smallAmount = 0.0001;
         $grams = $this->converter->toGrams($smallAmount, UnitType::Kilogram);
         $this->assertEquals(0, $grams, 'Very small amounts should be rounded to 0 grams');
 
-        // Test that large amounts maintain precision
         $largeAmount = 9999.999;
         $grams = $this->converter->toGrams($largeAmount, UnitType::Kilogram);
         $backToKg = $this->converter->fromGrams($grams, UnitType::Kilogram);
@@ -104,12 +102,10 @@ class UnitConverterServiceTest extends TestCase
 
     public function testEdgeCases(): void
     {
-        // Test PHP_FLOAT_MAX handling
         $maxFloat = PHP_FLOAT_MAX;
         $resultGrams = $this->converter->toGrams($maxFloat, UnitType::Gram);
         $this->assertIsFloat($resultGrams, 'Should handle maximum float values');
 
-        // Test PHP_FLOAT_MIN handling
         $minFloat = PHP_FLOAT_MIN;
         $resultKg = $this->converter->fromGrams($minFloat, UnitType::Kilogram);
         $this->assertIsFloat($resultKg, 'Should handle minimum float values');
