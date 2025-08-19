@@ -10,10 +10,15 @@ use InvalidArgumentException;
 interface ItemCollectionInterface
 {
     /**
-     * @throws InvalidArgumentException
+     * @param Item $item
+     * @return void
      */
     public function add(Item $item): void;
 
+    /**
+     * @param string $name
+     * @return void
+     */
     public function remove(string $name): void;
 
     /**

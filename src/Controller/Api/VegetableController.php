@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Collection\Item\VegetableCollection;
-use App\DTO\Item as ItemDTO;
+use App\DTO\ItemRequest;
+use App\Enum\ItemType;
 use App\Service\ItemService\ItemServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -24,22 +24,20 @@ final class VegetableController extends AbstractController
     }
 
     #[Route('', methods: ['GET'])]
-    public function list(
-        Request $request,
-        #[MapQueryParameter] ?string $name = null,
-        #[MapQueryParameter] ?string $unit = null,
-        #[MapQueryParameter] ?float $min = null,
-        #[MapQueryParameter] ?float $max = null,
-    ): JsonResponse {
+    public function list(Request $request): JsonResponse {
         return $this->json(
             $this->itemService->list($request, $this->collection)
         );
     }
 
     #[Route('', methods: ['POST'])]
-    public function add(#[MapRequestPayload] ItemDTO $dto): JsonResponse
+    public function add(#[MapRequestPayload] ItemRequest $itemRequest): JsonResponse
     {
-        $this->itemService->add($dto, $this->collection);
+        foreach ($itemRequest->items as $item) {
+            if ($item->type === ItemType::Vegetable) {
+                $this->itemService->add($item, $this->collection);
+            }
+        }
 
         return $this->json(null, Response::HTTP_CREATED);
     }

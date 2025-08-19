@@ -21,17 +21,17 @@ class Item
     #[ORM\Column(type: 'string', enumType: ItemType::class)]
     private ItemType $type;
 
-    #[ORM\Column(type: 'float')]
-    private float $amountInGrams;
+    #[ORM\Column(name: 'quantity_in_grams', type: 'float')]
+    private float $quantityInGrams;
 
     public function __construct(
         string $name,
         ItemType $type,
-        float $amountInGrams,
+        float $quantityInGrams,
     ) {
         $this->name = $name;
         $this->type = $type;
-        $this->amountInGrams = $amountInGrams;
+        $this->quantityInGrams = $quantityInGrams;
     }
 
     public function getId(): ?int
@@ -61,14 +61,14 @@ class Item
         return $this;
     }
 
-    public function getAmountInGrams(): float
+    public function getQuantityInGrams(): float
     {
-        return $this->amountInGrams;
+        return $this->quantityInGrams;
     }
 
-    public function setAmountInGrams(float $amountInGrams): self
+    public function setQuantityInGrams(float $quantityInGrams): self
     {
-        $this->amountInGrams = $amountInGrams;
+        $this->quantityInGrams = $quantityInGrams;
         return $this;
     }
 }

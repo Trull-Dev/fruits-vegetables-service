@@ -6,6 +6,7 @@ namespace App\Tests\Controller\Api;
 use App\Collection\Item\FruitCollection;
 use App\Controller\Api\FruitController;
 use App\DTO\Item;
+use App\DTO\ItemRequest;
 use App\Enum\ItemType;
 use App\Enum\UnitType;
 use App\Service\ItemService\ItemServiceInterface;
@@ -36,7 +37,7 @@ class FruitControllerTest extends WebTestCase
     public function testList(): void
     {
         $expectedResponse = [
-            ['name' => 'banana', 'amount' => 150.0, 'unit' => UnitType::Gram->value, 'type' => ItemType::Fruit->value]
+            ['name' => 'banana', 'quantity' => 150.0, 'unit' => UnitType::Gram->value, 'type' => ItemType::Fruit->value]
         ];
 
         $this->itemService->expects($this->once())
@@ -54,18 +55,34 @@ class FruitControllerTest extends WebTestCase
 
     public function testAdd(): void
     {
-        $dto = new Item(
-            name: 'banana',
-            amount: 150.0,
-            unit: UnitType::Gram,
-            type: ItemType::Fruit
-        );
+        $items = [
+            new Item(
+                name: 'banana',
+                quantity: 150.0,
+                unit: UnitType::Gram,
+                type: ItemType::Fruit
+            ),
+            new Item(
+                name: 'apple',
+                quantity: 150.0,
+                unit: UnitType::Gram,
+                type: ItemType::Fruit
+            ),
+        ];
 
-        $this->itemService->expects($this->once())
+        $itemRequest = new ItemRequest(items: $items);
+
+        $this->itemService
+            ->expects($this->exactly(2))
             ->method('add')
-            ->with($dto, $this->collection);
+            ->willReturnCallback(function($item, $collection) use ($items) {
+                static $callNumber = 0;
+                $this->assertSame($items[$callNumber], $item);
+                $this->assertSame($this->collection, $collection);
+                $callNumber++;
+            });
 
-        $response = $this->controller->add($dto);
+        $response = $this->controller->add($itemRequest);
         $this->assertEquals(201, $response->getStatusCode());
     }
 

@@ -6,6 +6,7 @@ namespace App\Tests\Controller\Api;
 use App\Collection\Item\VegetableCollection;
 use App\Controller\Api\VegetableController;
 use App\DTO\Item;
+use App\DTO\ItemRequest;
 use App\Enum\ItemType;
 use App\Enum\UnitType;
 use App\Service\ItemService\ItemServiceInterface;
@@ -36,7 +37,7 @@ class VegetableControllerTest extends WebTestCase
     public function testList(): void
     {
         $expectedResponse = [
-            ['name' => 'carrot', 'amount' => 100.0, 'unit' => UnitType::Gram->value, 'type' => ItemType::Vegetable->value]
+            ['name' => 'carrot', 'quantity' => 100.0, 'unit' => UnitType::Gram->value, 'type' => ItemType::Vegetable->value]
         ];
 
         $this->itemService->expects($this->once())
@@ -54,20 +55,37 @@ class VegetableControllerTest extends WebTestCase
 
     public function testAdd(): void
     {
-        $dto = new Item(
-            name: 'carrot',
-            amount: 100.0,
-            unit: UnitType::Gram,
-            type: ItemType::Vegetable
-        );
+        $items = [
+            new Item(
+                name: 'carrot',
+                quantity: 150.0,
+                unit: UnitType::Gram,
+                type: ItemType::Vegetable
+            ),
+            new Item(
+                name: 'salad',
+                quantity: 150.0,
+                unit: UnitType::Gram,
+                type: ItemType::Vegetable
+            ),
+        ];
 
-        $this->itemService->expects($this->once())
+        $itemRequest = new ItemRequest(items: $items);
+
+        $this->itemService
+            ->expects($this->exactly(2))
             ->method('add')
-            ->with($dto, $this->collection);
+            ->willReturnCallback(function($item, $collection) use ($items) {
+                static $callNumber = 0;
+                $this->assertSame($items[$callNumber], $item);
+                $this->assertSame($this->collection, $collection);
+                $callNumber++;
+            });
 
-        $response = $this->controller->add($dto);
+        $response = $this->controller->add($itemRequest);
         $this->assertEquals(201, $response->getStatusCode());
     }
+
 
     public function testRemove(): void
     {

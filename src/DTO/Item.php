@@ -17,9 +17,9 @@ final readonly class Item
         public string $name,
 
         #[Assert\NotNull]
-        #[Assert\Positive(message: 'Amount can\'t be negative')]
-        #[SerializedName('amount')]
-        public float $amount,
+        #[Assert\Positive(message: 'Quantity can\'t be negative')]
+        #[SerializedName('quantity')]
+        public float $quantity,
 
         #[Assert\NotNull]
         #[Assert\Type(UnitType::class)]

@@ -8,15 +8,15 @@ use App\Enum\UnitType;
 final class UnitConverterService implements UnitConverterInterface
 {
     /**
-     * @param float $amount
+     * @param float $quantity
      * @param UnitType $unit
      * @return float
      */
-    public function toGrams(float $amount, UnitType $unit): float
+    public function toGrams(float $quantity, UnitType $unit): float
     {
         return match ($unit) {
-            UnitType::Kilogram => (int)round($amount * 1000.0),
-            UnitType::Gram => (int)round($amount),
+            UnitType::Kilogram => (int)round($quantity * 1000.0),
+            UnitType::Gram => (int)round($quantity),
         };
     }
 

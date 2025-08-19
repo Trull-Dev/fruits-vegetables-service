@@ -38,7 +38,7 @@ class ItemServiceTest extends TestCase
     {
         $dto = new ItemDTO(
             name: 'apple',
-            amount: 100,
+            quantity: 100,
             unit: UnitType::Gram,
             type: ItemType::Fruit
         );
@@ -59,7 +59,7 @@ class ItemServiceTest extends TestCase
             ->with($this->callback(function(Item $item) {
                 return $item->getName() === 'apple'
                     && $item->getType() === ItemType::Fruit
-                    && $item->getAmountInGrams() === 100.0;
+                    && $item->getQuantityInGrams() === 100.0;
             }));
 
         $this->service->add($dto, $this->collection);
@@ -72,7 +72,7 @@ class ItemServiceTest extends TestCase
         new ItemDTO(
             name: 4,
             type: ItemType::Fruit,
-            amount: 100,
+            quantity: 100,
             unit: UnitType::Gram
         );
     }
@@ -81,13 +81,13 @@ class ItemServiceTest extends TestCase
     {
         $dto = new ItemDTO(
             name: 'apple',
-            amount: -100,
+            quantity: -100,
             unit: UnitType::Gram,
             type: ItemType::Fruit
         );
 
         $violation = $this->createMock(ConstraintViolation::class);
-        $violation->method('getMessage')->willReturn('Amount must be positive');
+        $violation->method('getMessage')->willReturn('Quantity must be positive');
 
         $this->validator->expects($this->once())
             ->method('validate')
@@ -95,7 +95,7 @@ class ItemServiceTest extends TestCase
             ->willReturn(new ConstraintViolationList([$violation]));
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Amount must be positive');
+        $this->expectExceptionMessage('Quantity must be positive');
 
         $this->service->add($dto, $this->collection);
     }
@@ -111,7 +111,7 @@ class ItemServiceTest extends TestCase
 
     public function testListItems(): void
     {
-        $request = new Request(['unit' => 'gr']);
+        $request = new Request(['unit' => 'g']);
         $items = [new Item('apple', ItemType::Fruit, 100)];
 
         $this->collection->expects($this->once())
@@ -131,8 +131,8 @@ class ItemServiceTest extends TestCase
         $this->assertEquals([
             'name' => 'apple',
             'type' => 'fruit',
-            'amount' => 100.0,
-            'unit' => 'gr'
+            'quantity' => 100.0,
+            'unit' => 'g'
         ], $result[0]);
     }
 

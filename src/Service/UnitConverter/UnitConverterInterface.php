@@ -8,11 +8,11 @@ use App\Enum\UnitType;
 interface UnitConverterInterface
 {
     /**
-     * @param float $amount
+     * @param float $quantity
      * @param UnitType $unit
      * @return float grams
      */
-    public function toGrams(float $amount, UnitType $unit): float;
+    public function toGrams(float $quantity, UnitType $unit): float;
 
     /**
      * @param float $grams

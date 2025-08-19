@@ -6,5 +6,5 @@ namespace App\Enum;
 enum UnitType: string
 {
     case Kilogram = 'kg';
-    case Gram = 'gr';
+    case Gram = 'g';
 }

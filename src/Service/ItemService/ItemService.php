@@ -33,7 +33,7 @@ final readonly class ItemService implements ItemServiceInterface
             throw new InvalidArgumentException($violations->get(0)->getMessage());
         }
 
-        $grams = $this->converter->toGrams($dto->amount, $dto->unit);
+        $grams = $this->converter->toGrams($dto->quantity, $dto->unit);
         $collection->add(new Item($dto->name, $dto->type, $grams));
     }
 
@@ -66,7 +66,7 @@ final readonly class ItemService implements ItemServiceInterface
             fn(Item $item) => [
                 'name' => $item->getName(),
                 'type' => $item->getType()->value,
-                'amount' => $this->converter->fromGrams($item->getAmountInGrams(), $unit),
+                'quantity' => $this->converter->fromGrams($item->getQuantityInGrams(), $unit),
                 'unit' => $unit->value,
             ],
             $collection->list($this->createFilters($request->query->all()))->toArray()

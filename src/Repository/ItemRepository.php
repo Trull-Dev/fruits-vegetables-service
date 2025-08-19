@@ -51,12 +51,12 @@ class ItemRepository extends ServiceEntityRepository
         }
 
         if (isset($filters['minGrams'])) {
-            $qb->andWhere('i.amountInGrams >= :minGrams')
+            $qb->andWhere('i.quantityInGrams >= :minGrams')
                 ->setParameter('minGrams', $filters['minGrams']);
         }
 
         if (isset($filters['maxGrams'])) {
-            $qb->andWhere('i.amountInGrams <= :maxGrams')
+            $qb->andWhere('i.quantityInGrams <= :maxGrams')
                 ->setParameter('maxGrams', $filters['maxGrams']);
         }
 

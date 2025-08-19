@@ -19,19 +19,19 @@ class UnitConverterServiceTest extends TestCase
     /**
      * @dataProvider toGramsProvider
      */
-    public function testToGrams(float $amount, UnitType $unit, float $expectedGrams): void
+    public function testToGrams(float $quantity, UnitType $unit, float $expectedGrams): void
     {
-        $result = $this->converter->toGrams($amount, $unit);
+        $result = $this->converter->toGrams($quantity, $unit);
         $this->assertEquals($expectedGrams, $result);
     }
 
     /**
      * @dataProvider fromGramsProvider
      */
-    public function testFromGrams(float $grams, UnitType $targetUnit, float $expectedAmount): void
+    public function testFromGrams(float $grams, UnitType $targetUnit, float $expectedQuantity): void
     {
         $result = $this->converter->fromGrams($grams, $targetUnit);
-        $this->assertEquals($expectedAmount, $result);
+        $this->assertEquals($expectedQuantity, $result);
     }
 
     /**
@@ -61,7 +61,7 @@ class UnitConverterServiceTest extends TestCase
             'gram to gram' => [100.0, UnitType::Gram, 100.0],
             'gram to kilogram' => [1000.0, UnitType::Kilogram, 1.0],
             'gram to kilogram with decimal' => [1500.0, UnitType::Kilogram, 1.5],
-            'small amount to kilogram' => [1.0, UnitType::Kilogram, 0.001],
+            'small quantity to kilogram' => [1.0, UnitType::Kilogram, 0.001],
             'zero to gram' => [0.0, UnitType::Gram, 0.0],
             'zero to kilogram' => [0.0, UnitType::Kilogram, 0.0],
             'large number to gram' => [999999.0, UnitType::Gram, 999999.0],
@@ -70,23 +70,23 @@ class UnitConverterServiceTest extends TestCase
 
     public function testRoundTripConversion(): void
     {
-        $originalAmount = 1.5;
-        $grams = $this->converter->toGrams($originalAmount, UnitType::Kilogram);
+        $originalQuantity = 1.5;
+        $grams = $this->converter->toGrams($originalQuantity, UnitType::Kilogram);
         $result = $this->converter->fromGrams($grams, UnitType::Kilogram);
 
-        $this->assertEquals($originalAmount, $result);
+        $this->assertEquals($originalQuantity, $result);
     }
 
     public function testPrecisionHandling(): void
     {
-        $smallAmount = 0.0001;
-        $grams = $this->converter->toGrams($smallAmount, UnitType::Kilogram);
-        $this->assertEquals(0, $grams, 'Very small amounts should be rounded to 0 grams');
+        $smallQuantity = 0.0001;
+        $grams = $this->converter->toGrams($smallQuantity, UnitType::Kilogram);
+        $this->assertEquals(0, $grams, 'Very small quantity should be rounded to 0 grams');
 
-        $largeAmount = 9999.999;
-        $grams = $this->converter->toGrams($largeAmount, UnitType::Kilogram);
+        $largeQuantity = 9999.999;
+        $grams = $this->converter->toGrams($largeQuantity, UnitType::Kilogram);
         $backToKg = $this->converter->fromGrams($grams, UnitType::Kilogram);
-        $this->assertEqualsWithDelta($largeAmount, $backToKg, 0.001, 'Large amounts should maintain precision');
+        $this->assertEqualsWithDelta($largeQuantity, $backToKg, 0.001, 'Large quantity should maintain precision');
     }
 
     public function testNegativeValues(): void
